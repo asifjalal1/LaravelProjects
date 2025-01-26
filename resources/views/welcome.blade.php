@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live Wire Test</title>
+    @livewireStyles
+    @livewireScripts
     @vite(['resources/css/app.css','resources/js/app.js'])
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -21,21 +23,26 @@
 <body>
     <div class="container">
         <div class="flex justify-center items-center">
-            {{-- <div style="width: 50%; margin-top: 5rem;">
+            <div style="width: 50%; margin-top: 5rem;">
                 <livewire:first-component />
-            </div> --}}
-            <div>
-                <h1>Send Event</h1>
-                <livewire:send-event />
             </div>
         </div>
-        <hr>
-        <div class="flex justify-center items-center">
-            <div>
-                <h1>Recieved Event</h1>
-                <livewire:recieve-event />
+        
+        {{--
+            <div class="flex justify-center items-center">
+                <div>
+                    <h1>Send Event</h1>
+                    <livewire:send-event />
+                </div>
             </div>
-        </div>
+            <hr>
+            <div class="flex justify-center items-center">
+                <div>
+                    <h1>Recieved Event</h1>
+                    <livewire:recieve-event />
+                </div>
+            </div>
+        --}}
     </div>
 </body>
 </html>

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 
 class FirstComponent extends Component
@@ -23,42 +24,54 @@ class FirstComponent extends Component
     //     $this->count = $number;
     // }
 
-    public string $name, $email, $your_password;
-    public $users = [
-        [
-            'name' => 'New User',
-            'email' => 'new@example',
-            'password' => 'pppppp',
-        ]
-    ];
-
+    public string $name, $email, $id;
+    // public $users = [];
     public function mount()
     {
-        // $this->users = \App\Models\User::all();
+        // $this->users = User::all();
     }
 
     public function addUser(){
+        // $new_user = [
+        //     'name' => $this->name,
+        //     'email' => $this->email,
+        // ];
+        // $this->users[] = $new_user;
+        $this->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+        ]);
         $new_user = [
             'name' => $this->name,
             'email' => $this->email,
-            'password' => $this->your_password,
+            'password' => rand(1000, 9999),
         ];
-        $this->users[] = $new_user;
+        User::updateOrCreate(
+            [
+               'id' => $this->id ?? null, 
+            ],$new_user);
+        // $this->reset();
     }
-    public function editUser($name){
-        foreach ($this->users as $key => $user) {
-            if($user['name'] == $name){
-                $this->name = $user['name'];
-                $this->email = $user['email'];
-                $this->your_password = $user['password'];
-            }
-        }
+    public function editUser($id){
+        // foreach ($this->users as $key => $user) {
+        //     if($user['name'] == $id){
+        //         $this->name = $user['name'];
+        //         $this->email = $user['email'];
+        //     }
+        // }
+        $user = User::find($id);
+        $this->name = $user->name;
+        $this->email = $user->email;
+        $this->id = $user->id;
     }
-    public function deleteUser($name){
-        $this->users = array_filter($this->users, fn($user) => $user['name'] != $name);
+    public function deleteUser($id){
+        // $this->users = array_filter($this->users, fn($user) => $user['name'] != $id);
+        User::find($id)->delete();
     }
     public function render()
     {
-        return view('livewire.first-component');
+        return view('livewire.first-component', [
+            'users' => User::all()->toArray()
+        ]);
     }
 }

@@ -11,11 +11,16 @@ class SendEvent extends Component
     {
         $this->emit('event', $name);
     }
+
+    public function sendData(){
+        $this->dispatch('send-data');
+        // $this->dispatchBrowserEvent('send-data');
+    }
+
     public function send()
     {
         $this->dispatch('addName', $this->name);
-        $this->reset('name');
-        // $this->dispatchBrowserEvent('addName', $this->name);
+        // $this->reset('name');
     }
     public function render()
     {
