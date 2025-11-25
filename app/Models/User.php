@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Str;
 
 class User extends Authenticatable
 {
@@ -21,6 +23,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar',
+        'phone',
+        'is_admin',
+        'blocked_at',
+        'email_verified_at'
     ];
 
     /**
@@ -44,5 +51,23 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    // protected $attributes = [
+    //     'is_admin' => false,
+    //     'phone' => '0' . Str::random(10),
+    // ];
+
+    protected static function booted()
+    {
+        parent::booted();
+
+        static::creating(function ($user) {
+            $user->phone = fake()->phoneNumber();
+        });
+    }
+    
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_user', 'user_id', 'group_id');
     }
 }
